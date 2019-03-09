@@ -1,0 +1,127 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Time Service Specification",
+    "description": "Challenge. Time Service. Employee Timesheet",
+    "version": "0.1"
+  },
+  "components": {
+    "parameters": {
+      "employee_id": {
+        "name": "employee_id",
+        "description": "Employee identifier",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "integer"
+        }
+      },
+      "start_date": {
+        "name": "start_date",
+        "description": "start date for querying employee check in history",
+        "in": "query",
+        "required": true,
+        "schema": {
+          "type": "string",
+          "format": "date"
+        }
+      },
+      "end_date": {
+        "name": "end_date",
+        "description": "end date for querying employee check in history",
+        "in": "query",
+        "required": true,
+        "schema": {
+          "type": "string",
+          "format": "date"
+        }
+      }
+    },
+    "schemas": {
+      "timesheetPayload": {
+        "type": "object",
+        "properties": {
+          "employeeId": {
+            "type": "integer"
+          },
+          "timesheet": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "workDate": {
+                  "type": "string",
+                  "format": "date"
+                },
+                "workedHours": {
+                  "type": "number"
+                }
+              }
+            }
+          }
+        },
+        "required": ["employeeId", "timesheet"]
+      },
+      "errorPayload": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "string"
+          }
+        },
+        "required": ["error"]
+      }
+    }
+  },
+  "paths": {
+    "/timecontrol/v1/timesheet/{employee_id}": {
+      "get": {
+        "description": "Retrieves employee's timesheet",
+        "operationId": "retrieveTimesheet",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/employee_id"
+          },
+          {
+            "$ref": "#/components/parameters/start_date"
+          },
+          {
+            "$ref": "#/components/parameters/end_date"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/timesheetPayload"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorPayload"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Employee Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorPayload"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

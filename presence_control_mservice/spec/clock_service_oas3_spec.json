@@ -1,0 +1,282 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Clock Service Specification",
+    "description": "Challenge. Clock Service. Employee Check in/out. Presence. History",
+    "version": "0.1"
+  },
+  "components": {
+    "parameters": {
+      "employee_id": {
+        "name": "employee_id",
+        "description": "Employee identifier",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "integer"
+        }
+      },
+      "start_date": {
+        "name": "start_date",
+        "description": "start date for querying employee check in history",
+        "in": "query",
+        "required": true,
+        "schema": {
+          "type": "string",
+          "format": "date"
+        }
+      },
+      "end_date": {
+        "name": "end_date",
+        "description": "end date for querying employee check in history",
+        "in": "query",
+        "required": true,
+        "schema": {
+          "type": "string",
+          "format": "date"
+        }
+      }
+    },
+    "schemas": {
+      "checkPayload": {
+        "type": "object",
+        "properties": {
+          "employeeId": {
+            "type": "integer"
+          },
+          "terminalId": {
+            "type": "string"
+          }
+        },
+        "required": ["employeeId", "terminalId"]
+      },
+      "presencePayload": {
+        "type": "object",
+        "properties": {
+          "employeeId": {
+            "type": "integer"
+          },
+          "status": {
+            "type": "string",
+            "enum": ["in","out"]
+          },
+          "lastUpdate": {
+            "type": "string",
+            "format": "datetime"
+          }
+        },
+        "required": ["employeeId", "status", "lastUpdate"]
+      },
+      "historyPayload": {
+        "type": "object",
+        "properties": {
+          "employeeId": {
+            "type": "integer"
+          },
+          "history": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "checkInDate": {
+                  "type": "string",
+                  "format": "datetime"
+                },
+                "checkOutDate": {
+                  "type": "string",
+                  "format": "datetime"
+                }
+              }
+            }
+          }
+        },
+        "required": ["employeeId", "history"]
+      },
+      "errorPayload": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "string"
+          }
+        },
+        "required": ["error"]
+      }
+    }
+  },
+  "paths": {
+    "/clock/v1/check_in": {
+      "post": {
+        "description": "Employee check in",
+        "operationId": "check_in",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/checkPayload"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "No Content. Successful check in"
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorPayload"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Employee or Terminal Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorPayload"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/clock/v1/check_out": {
+      "post": {
+        "description": "Employee check out",
+        "operationId": "check_out",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/checkPayload"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "No Content. Successful check out"
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorPayload"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Employee or Terminal Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorPayload"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/clock/v1/presence/{employee_id}": {
+      "get": {
+        "description": "Retrieves presence information about an employee",
+        "operationId": "retrievePresence",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/employee_id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/presencePayload"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorPayload"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Employee Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorPayload"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/clock/v1/history/{employee_id}": {
+      "get": {
+        "description": "Retrieves check in/out history information about an employee",
+        "operationId": "retrieveHistory",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/employee_id"
+          },
+          {
+            "$ref": "#/components/parameters/start_date"
+          },
+          {
+            "$ref": "#/components/parameters/end_date"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/historyPayload"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorPayload"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Employee Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorPayload"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

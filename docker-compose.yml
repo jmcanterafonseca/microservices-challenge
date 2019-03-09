@@ -1,0 +1,81 @@
+postgresql:
+      image: postgres
+      hostname: postgresql
+      container_name: postgresql
+      expose:
+        - "5432"
+      ports:
+        - "5432:5432"
+      environment:
+        - "POSTGRES_PASSWORD=password"
+        - "POSTGRES_USER=postgres"
+        - "POSTGRES_DB=postgres"
+      volumes:
+        - postgres-db:/var/lib/postgresql/data
+
+kafka:
+    image: spotify/kafka
+    hostname: kafka
+    expose:
+    - "9092"
+    - "2181"
+    ports:
+    - "9092:9092"
+    - "2181:2181"
+
+presence:
+  image: jmcanterafonseca/challenge_presence_service
+  container_name: presence
+  links:
+    - postgresql
+    - kafka
+  expose:
+    - "5000"
+  ports:
+    - "5000:5000"
+  environment:
+    - Db_Url=jdbc:postgresql://postgresql:5432/presence_control
+    - Db_User=user
+    - Db_Pass=pass
+    - Kafka_Broker=kafka:9092
+
+timesheet:
+  image: jmcanterafonseca/challenge_timesheet_service
+  container_name: timesheet
+  links:
+    - postgresql
+    - kafka
+  expose:
+    - "6000"
+  ports:
+    - "6000:6000"
+  environment:
+    - Db_Url=jdbc:postgresql://postgresql:5432/presence_control
+    - Db_User=user
+    - Db_Pass=pass
+    - Kafka_Broker=kafka:9092
+
+alarmgenerator:
+  image: jmcanterafonseca/challenge_alarm_generator_service
+  container_name: alarmgenerator
+  links:
+    - kafka
+  environment:
+    - Kafka_Broker=kafka:9092
+    
+alarmhandler:
+  image: jmcanterafonseca/challenge_alarm_handler_service
+  container_name: alarmhandler
+  links:
+    - postgresql
+    - kafka
+  environment:
+    - Db_Url=jdbc:postgresql://postgresql:5432/presence_control
+    - Db_User=A
+    - Db_Pass=B
+    - Kafka_Broker=kafka:9092
+    - Email_Server=smtp.googlemail.com
+    - Email_Server_User=challenge@gmail.com
+    - Email_Server_Pass=pass
+    - Alarm_Recipient=jmcanterafonseca@gmail.com
+    
