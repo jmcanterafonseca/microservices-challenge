@@ -3,7 +3,7 @@
 ## Introduction 
 
 The challenge has consisted on the design and implementation of the backend for a presence control system for the employees of a company.
-Employees must always clock in and out by registering their fingerprint.  The HR department will need:
+Employees must always clock in and out by registering their fingerprint.  The HR department needs are among others:
 
 * Access to the employee’s presence and time control.
 * Generation of time sheets of effective worked hours.
