@@ -23,8 +23,8 @@ trait Configuration {
   var DbPwd = "Db_Pwd"
 
   val DefaultDbUrl = "jdbc:postgresql://localhost:5432/presence_control"
-  val DefaultDbUser = "a"
-  var DefaultDbPwd = "b"
+  val DefaultDbUser = "challenge"
+  var DefaultDbPwd = "challenge"
 
   val KafkaBroker = "Kafka_Broker"
   val DefaultKafkaBroker = "localhost:9092"

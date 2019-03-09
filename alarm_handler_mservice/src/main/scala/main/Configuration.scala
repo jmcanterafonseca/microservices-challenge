@@ -2,7 +2,6 @@ package main
 
 import db.{Database, DbParams}
 import mail.MailParams
-import main.Launcher.{AlarmRecipient, DefaultAlarmRecipient}
 
 /**
   *
@@ -16,8 +15,8 @@ trait Configuration {
   var DbPwd = "Db_Pwd"
 
   val DefaultDbUrl = "jdbc:postgresql://localhost:5432/presence_control"
-  val DefaultDbUser = "a"
-  val DefaultDbPwd = "b"
+  val DefaultDbUser = "challenge"
+  val DefaultDbPwd = "challenge"
   val KafkaBroker = "Kafka_Broker"
   val DefaultKafkaBroker = "localhost:9092"
 
@@ -27,7 +26,7 @@ trait Configuration {
   val AlarmRecipient = "Alarm_Recipient"
 
   val DefaultEmailServer = "smtp.googlemail.com"
-  val DefaultEmailServerUser = "email@gmail.com"
+  val DefaultEmailServerUser = "challenge@gmail.com"
   val DefaultEmailServerPass = "20192020"
   val DefaultAlarmRecipient = "jmcanterafonseca@gmail.com"
 

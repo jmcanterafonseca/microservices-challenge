@@ -1,3 +1,3 @@
 #!/bin/sh
 
-psql -U user -d presence_control -f create_tables.sql
+psql -U challenge -d presence_control -f create_tables.sql
