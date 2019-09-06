@@ -9,6 +9,10 @@ customers who have purchased any of them).
 
 ### Solution 
 
+See the figure below:
+
+![alt text](doc/multi_domain1.png)
+
 * How many microservices there should be? 
 
 There should be **three** different microservices (one for each main business function): 
@@ -39,4 +43,6 @@ will expose at least one operation `purchase(customer_id, product_id, quantity)`
 
 ### Alternative Architecture using a distributed cache for bridges and master ids
 
-Instead of having bridge tables living in the domain of each microservice, those bridge tables could be stored in a distributed cache (e.g. Apache Ignite) that could be kept up to date by the different Microservices. That cache could contain the list of valid product ids, the list of valid customer ids, and an associative table or bridge table linking customers and products.   
+Instead of having mini-bridge tables living in the domain of each microservice, those bridge tables could be stored in a distributed cache (e.g. Apache Ignite) that could be kept up to date by the different Microservices. That cache could contain the list of valid product ids, the list of valid customer ids, and an associative table or bridge table linking customers and products. See figure below. 
+
+![alt text](doc/multi_domain2.png)
