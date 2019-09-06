@@ -3,7 +3,7 @@
 ## Problem Statement / Assumptions
 
 The information to be maintained are *Customers*, *Products* and Purchases. A Product can be purchased by multiple Customers. 
-A Customer can buy multiple Products. It is required to be able to manage customer purchases and we want to have a user
+A Customer can buy multiple Products. It is required to be able to manage customer purchases and we would like to have a user
 interface that allows to search for information about customers (and their products) or products (and the 
 customers who have purchased any of them). 
 
