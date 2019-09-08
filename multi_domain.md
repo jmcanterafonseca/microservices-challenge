@@ -57,3 +57,7 @@ In addition there should be four additional extra infrastructure components (not
 3. With the information provided by the cache, issue a request to the Customer MicroService by asking for the information of the customer who purchased each product in the current page.
 
 4. Merge all the information of customers and products and present it in the UI. 
+
+## Conclusions
+
+The proposed solution advocates the usage of distributed caches to allow to hold information that is within the boundaries of domains. As a result, microservice developers can keep focused on their domains without being worried about other microservices that can be added or removed in the underlying architecture. 
