@@ -30,7 +30,7 @@ In addition there should be four additional extra infrastructure components (not
 
 * **Event Broker** a publish/subscribe broker that allows asynchronous communication of events emitted by microservices in a decoupled fashion. 
 
-* **Distributed Cache** A bridge table that associate products and customers (which are in the bridge between domains) can be stored in a distributed cache, that will be kept up to date by a "Cache Updater" component (see below). Such cache should contain the list of valid product ids, the list of valid customer ids, and an associative table, or bridge table, linking customer ids and product ids.
+* **Distributed Cache** A bridge table that associates products and customers (which are in the bridge between domains) can be stored in a distributed cache, that will be kept up to date by a "Cache Updater" component (see below). Such cache should contain the list of valid product ids, the list of valid customer ids, and an associative table, or bridge table, linking customer ids and product ids.
 
 * **Cache Updater** This component listens to events emitted by the different microservices and updates the distributed cache accordingly. Avoids the coupling between microservices, as microservices, in general, will only have to worry about emitting their own events, without knowing the existence of a cache, or even other microservices. 
 
