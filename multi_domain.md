@@ -11,7 +11,7 @@ customers who have purchased any of them).
 
 See the figure below:
 
-![alt text](multidomain1.png)
+![alt text](multidomain.png)
 
 There should be **three** different microservices (one for each main business function): 
 
